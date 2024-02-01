@@ -5,9 +5,9 @@ import Headline from "~/components/ui/Headline.astro";
 import type { Features } from "~/types";
 
 const {
-  title = await Astro.slots.render("title"),
-  subtitle = await Astro.slots.render("subtitle"),
-  tagline = await Astro.slots.render("tagline"),
+  title,
+  subtitle,
+  tagline,
   items = [],
   columns = 2,
 
