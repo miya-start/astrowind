@@ -1,0 +1,10 @@
+---
+import { localeKeys } from "~/i18n";
+import IndexDefault from "~/pages/index.astro";
+
+export const getStaticPaths = () => {
+  return localeKeys.map((locale) => ({ params: { locale } }));
+};
+---
+
+<IndexDefault />

@@ -12,12 +12,13 @@ const locales = {
   },
 } as const;
 
-type Locale = keyof typeof locales;
+export type LocaleKey = keyof typeof locales;
+export const localeKeys = Object.keys(locales) as LocaleKey[];
 
 export const getTranslation =
-  (path: string, locale: Locale) => (key: string) => {
+  (path: string, locale: LocaleKey) => (key: string) => {
     const translations = yaml.load(
       fs.readFileSync(`src/i18n/contents/${path}.yaml`, "utf8")
-    ) as Record<string, Record<Locale, string>>;
+    ) as Record<string, Record<LocaleKey, string>>;
     return translations[key]?.[locale] ?? key;
   };
