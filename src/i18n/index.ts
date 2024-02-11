@@ -1,8 +1,7 @@
-import fs from "fs";
-import yaml from "js-yaml";
+const DEFAULT_LOCALE = "ja";
 
 const locales = {
-  ja: {
+  [DEFAULT_LOCALE]: {
     labelSimple: "JP",
     labelDetail: "日本語",
   },
@@ -15,10 +14,18 @@ const locales = {
 export type LocaleKey = keyof typeof locales;
 export const localeKeys = Object.keys(locales) as LocaleKey[];
 
+function isLocaleKey(locale: unknown): locale is LocaleKey {
+  return (
+    typeof locale === "string" && (localeKeys as string[]).includes(locale)
+  );
+}
+
+export function getLocaleKey(locale: unknown): LocaleKey {
+  if (isLocaleKey(locale)) return locale;
+  return DEFAULT_LOCALE;
+}
+
+export type TranslationContents = Record<string, Record<LocaleKey, string>>;
 export const getTranslation =
-  (path: string, locale: LocaleKey) => (key: string) => {
-    const translations = yaml.load(
-      fs.readFileSync(`src/i18n/contents/${path}.yaml`, "utf8")
-    ) as Record<string, Record<LocaleKey, string>>;
-    return translations[key]?.[locale] ?? key;
-  };
+  (content: TranslationContents, locale: LocaleKey) => (key: string) =>
+    content[key]?.[locale] ?? key;
